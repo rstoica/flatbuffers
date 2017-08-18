@@ -1531,7 +1531,7 @@ class FlatBufferBuilder
       auto stra = reinterpret_cast<const String *>(buf_->data_at(a.o));
       auto strb = reinterpret_cast<const String *>(buf_->data_at(b.o));
       return strncmp(stra->c_str(), strb->c_str(),
-                     std::min(stra->size(), strb->size()) + 1) < 0;
+                     (std::min)(stra->size(), strb->size()) + 1) < 0;
     }
     const vector_downward *buf_;
   };
@@ -1543,7 +1543,7 @@ class FlatBufferBuilder
  private:
   // Allocates space for a vector of structures.
   // Must be completed with EndVectorOfStructs().
-  template<typename T> const T* StartVectorOfStructs(size_t vector_size) {
+  template<typename T> T* StartVectorOfStructs(size_t vector_size) {
     StartVector(vector_size * sizeof(T) / AlignOf<T>(), AlignOf<T>());
     return reinterpret_cast<T *>(buf_.make_space(vector_size * sizeof(T)));
   }
@@ -1961,7 +1961,7 @@ inline const uint8_t *GetBufferStartFromRootPointer(const void *root) {
   auto table = reinterpret_cast<const Table *>(root);
   auto vtable = table->GetVTable();
   // Either the vtable is before the root or after the root.
-  auto start = std::min(vtable, reinterpret_cast<const uint8_t *>(root));
+  auto start = (std::min)(vtable, reinterpret_cast<const uint8_t *>(root));
   // Align to at least sizeof(uoffset_t).
   start = reinterpret_cast<const uint8_t *>(
             reinterpret_cast<uintptr_t>(start) & ~(sizeof(uoffset_t) - 1));

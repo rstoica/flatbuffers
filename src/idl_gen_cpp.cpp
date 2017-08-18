@@ -302,7 +302,7 @@ class CppGenerator : public BaseGenerator {
   // Return a C++ type from the table in idl.h
   std::string GenTypeBasic(const Type &type, bool user_facing_type) const {
     static const char *ctypename[] = {
-    #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE, PTYPE) \
+    #define FLATBUFFERS_TD(ENUM, IDLTYPE, ALIASTYPE, CTYPE, JTYPE, GTYPE, NTYPE, PTYPE) \
             #CTYPE,
         FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)
     #undef FLATBUFFERS_TD
@@ -1772,7 +1772,7 @@ class CppGenerator : public BaseGenerator {
         // For optional fields, check to see if there actually is any data
         // in _o->field before attempting to access it.
         if (!field.required) {
-          code = value + ".size() ? " + code + " : 0";
+          code = value + ".empty() ? 0 : " + code;
         }
         break;
       }
